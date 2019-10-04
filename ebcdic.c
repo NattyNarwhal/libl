@@ -58,13 +58,3 @@ size_t utf2ebcdic (char *utf, int ebcdic_len, char *ebcdic)
 	return ret;
 }
 
-/*
- * Zoned decimal to integer conversion
- */
-int
-ztoi (char *zoned, int len)
-{
-	char *utf = malloc(len + 1);
-	ebcdic2utf (zoned, len, utf);
-	return atoi (utf);
-}
