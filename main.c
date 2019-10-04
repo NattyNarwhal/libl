@@ -8,6 +8,7 @@
 
 #include "qlichgll.h"
 #include "ebcdic.h"
+#include "error.h"
 
 /* it needs to be freed, but we'll exec/exit anyways */
 static char*
@@ -32,13 +33,6 @@ dup_to_libname (char *utf)
 }
 
 static void
-print_msg_exit (char *argv0, char *msg, int ret)
-{
-	fprintf (stderr, "%s: %s\n", argv0, msg);
-	exit (ret);
-}
-
-static void
 usage (char *argv0)
 {
 	fprintf (stderr, "usage: %s [-CrRL] [-c curlib] [-p prodlib] [-P prodlib] [-l userlib] -- [argv]\n", argv0);
@@ -48,6 +42,7 @@ usage (char *argv0)
 int
 main (int argc, char **argv)
 {
+	set_program_name (argv [0]);
 	ERRC0100 err = { 0 };
 	err.bytes_in = sizeof (err);
 	char *prodlib1, *prodlib2, *curlib;
@@ -83,7 +78,7 @@ main (int argc, char **argv)
 			break;
 		case 'l': /* set a user library */
 			if (userlibs_len >= 250) {
-				print_msg_exit (argv [0], "too many libs", 3);
+				print_msg_exit ("too many libs", 3);
 			}
 			if (userlibs_len == -1) {
 				userlibs_len = 0;
@@ -104,10 +99,10 @@ main (int argc, char **argv)
 		ebcdic2utf (err.exception_id, 7, code);
 		code [7] = '\0'; /* truncate */
 		sprintf (msg, "QLICHGLL returned exception code %s\n", code);
-		print_msg_exit (argv [0], msg, 2);
+		print_msg_exit (msg, 2);
 	}
 	char **newargv = argv + optind;
 	execvp (newargv [0], newargv);
-	print_msg_exit (argv [0], "failed to exec", 4);
+	print_msg_exit ("failed to exec", 4);
 	return 4; /* not reachable */
 }

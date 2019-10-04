@@ -4,8 +4,8 @@ CFLAGS := -O2 -Wall -pedantic -Werror -gxcoff -maix64
 LDFLAGS := -maix64
 
 PGM := libl
-OBJ := qlichgll.o ebcdic.o main.o
-DEPS := qlichgll.h ebcdic.h
+OBJ := qlichgll.o ebcdic.o main.o error.o
+DEPS := qlichgll.h ebcdic.h error.h
 
 .PHONY: all clean
 

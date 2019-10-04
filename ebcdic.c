@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <as400_protos.h>
 
+#include "error.h"
+
 iconv_t e2a, a2e;
 
 static void
@@ -15,7 +17,7 @@ init_iconv (void)
 	e2a = iconv_open(pasecs, jobcs);
 	a2e = iconv_open(jobcs, pasecs);
 	if (e2a == (iconv_t)(-1) || a2e == (iconv_t)(-1)) {
-		/* XXX: fail */
+		print_msg_exit ("iconv failed to init", 5);
 	}
 }
 

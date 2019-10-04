@@ -1,4 +1,5 @@
 #include "qlichgll.h"
+#include "error.h"
 
 #include <as400_protos.h>
 #include <stdbool.h>
@@ -23,7 +24,7 @@ qlichgll (char *cur, char* prodFirst, char *prodSecond, char **userLibs, int use
 {
 	if (!initialized) {
 		if (!init_pgm()) {
-			/* XXX: fail */
+			print_msg_exit ("failed to get QLICHGLL pointer", 6);
 		}
 	}
 	/* Assume caller passes in EBCDIC */
@@ -37,7 +38,6 @@ qlichgll (char *cur, char* prodFirst, char *prodSecond, char **userLibs, int use
 		NULL
 	};
 	if (0 != _PGMCALL(&pgm, pgm_argv, 0)) {
-		/* XXX: fail */
+		print_msg_exit ("failed to call QLICHGLL", 6);
 	}
-	/* check error */
 }
