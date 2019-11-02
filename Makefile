@@ -1,6 +1,6 @@
 CC := gcc
 LD := $(CC)
-CFLAGS := -O2 -Wall -pedantic -Werror -gxcoff -maix64
+CFLAGS := -O2 -Wall -Wextra -pedantic -Werror -gxcoff -maix64
 LDFLAGS := -maix64
 
 PGM := libl
